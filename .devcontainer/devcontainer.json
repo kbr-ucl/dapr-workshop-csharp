@@ -31,6 +31,7 @@
 		"vscode": {
 			"extensions": [
 				"ms-dotnettools.csharp",
+				"cweijan.vscode-database-client2",
 				"humao.rest-client"]
 		}
 	}

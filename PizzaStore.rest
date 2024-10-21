@@ -1,0 +1,16 @@
+@pizza-store = localhost:8001
+@order-id = 7adb27dd-53c3-4f20-be7f-591e155c9f07
+
+### Place a new order
+POST http://{{pizza-store}}/orders 
+content-type: application/json
+
+{ "customer": { "name": "fernando", "email": "fernando@email.com" }, "items": [ { "type":"vegetarian", "amount": 2 } ] }
+
+###Get order
+GET http://{{pizza-store}}/orders/{{order-id}}
+content-type: application/json
+
+###Delete order
+DELETE http://{{pizza-store}}/orders{{order-id}}
+content-type: application/json

@@ -15,6 +15,8 @@ public class PizzaStoreController : ControllerBase
 
     // -------- Dapr State Store -------- //
 
+    // -------- Dapr Service Invocation -------- //
+
     // -------- Dapr Pub/Sub -------- //
 
     // -------- Application routes -------- //

@@ -7,7 +7,21 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors();
+
 var app = builder.Build();
+
+app.UseCors(builder =>
+{
+    builder
+       .WithOrigins("http://localhost:8080")
+       .SetIsOriginAllowedToAllowWildcardSubdomains()
+       .AllowAnyHeader()
+       .AllowCredentials()
+       .WithMethods("GET", "PUT", "POST", "DELETE", "OPTIONS")
+       .SetPreflightMaxAge(TimeSpan.FromSeconds(3600));
+}
+);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

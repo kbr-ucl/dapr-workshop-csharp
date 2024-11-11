@@ -1,15 +1,8 @@
-// Dapr configuration
-const DAPR_HTTP_PORT = 3506; // Default Dapr HTTP port
-const PUBSUB_NAME = 'pizzapubsub';
-const TOPIC_NAME = 'order';
-
 var currentEvent = "";
 var currentOrder = "";
 
 function connect() {
-    console.log("Connected to Dapr sidecar");
     setConnected(true);
-    //subscribeToEvents();
 }
 
 function subscribeToEvents() {
@@ -26,7 +19,6 @@ function fetchEvents() {
             })
             .then(response => response.json())
             .then(event => {
-                event = event.replace(/'/g, '"')
                 showEvent(event);
             })
             .catch(error => console.error('Error fetching events:', error));
@@ -82,8 +74,8 @@ function placeOrder() {
     })
     .then(response => response.json())
     .then(response => {
-        console.log("jsonObj: ", response.orderId);
-        currentOrder = response.orderId;
+        console.log("jsonObj: ", response);
+        currentOrder = response.order_id;
         subscribeToEvents();
     })
     .catch(error => console.error('Error:', error));
@@ -122,8 +114,9 @@ function createEventEntry(event) {
 
 }
 
-function showEvent(event) {
-    var eventObj = JSON.parse(event);
+function showEvent(eventObj) {
+    //console.log(event);
+    //var eventObj = JSON.parse(event);
     if (currentEvent === eventObj.event) {
         return;
     }

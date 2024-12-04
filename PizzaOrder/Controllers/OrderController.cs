@@ -40,7 +40,7 @@ public class OrderController : ControllerBase
 
     
     [HttpDelete("{orderId}")]
-    public async Task<ActionResult<Order>> DeleteOrder(string orderId)
+    public async Task<ActionResult<string>> DeleteOrder(string orderId)
     {
         var order = await _orderStateService.GetOrderAsync(orderId);
         
@@ -50,7 +50,7 @@ public class OrderController : ControllerBase
         }
 
         await _orderStateService.DeleteOrderAsync(orderId);
-        return Ok(order);
+        return Ok(orderId);
     }
 
     [HttpPost("/orders-sub")]

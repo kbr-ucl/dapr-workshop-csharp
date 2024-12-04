@@ -1,0 +1,122 @@
+### Variables
+@baseUrl = http://localhost:8004
+
+@pizzaOrderUrl = http://localhost:8001
+
+@pizzaStorefrontUrl = http://localhost:8002
+@pizzaKitchenUrl = http://localhost:8003
+@pizzaDeliveryUrl = http://localhost:8004
+@pizzaWorkflowUrl = http://localhost:8005
+
+@wfrequest = {}
+
+// @name wfrequest
+@workflow_dapr_url = http://localhost:3504
+
+### Direct Pizza Order Endpoint (for testing)
+POST {{pizzaOrderUrl}}/order
+Content-Type: application/json
+
+{
+    "orderId": "123",
+    "pizzaType": "pepperoni",
+    "size": "large",
+    "customer": {
+        "name": "John Doe",
+        "address": "123 Main St",
+        "phone": "555-0123"
+    }
+}
+
+### Start a new pizza order workflow
+POST {{baseUrl}}/workflow/start-order
+Content-Type: application/json
+
+{
+    "orderId": "1",
+    "pizzaType": "pepperoni",
+    "size": "large",
+    "customer": {
+        "name": "John Doe",
+        "address": "123 Main St",
+        "phone": "555-0123"
+    }
+}
+
+### Start workflow endpoint using Dapr API
+
+POST {{workflow_dapr_url}}/v1.0-beta1/workflows/dapr/PizzaOrderingWorkflow/start?instanceID=pizza-order-1
+Content-Type: application/json
+
+{
+    "orderId": "1",
+    "pizzaType": "pepperoni",
+    "size": "large",
+    "customer": {
+        "name": "John Doe",
+        "address": "123 Main St",
+        "phone": "555-0123"
+    }
+}
+
+### Get workflow status
+@wfrequest_instanceID={{wfrequest.response.body.instanceID}}
+GET {{workflow_dapr_url}}/v1.0-beta1/workflows/dapr/pizza-order-1
+
+### Validate pizza (approve)
+POST {{baseUrl}}/workflow/validate-pizza
+Content-Type: application/json
+
+{
+    "orderId": "1",
+    "approved": true
+}
+
+### Validate pizza (reject)
+POST {{baseUrl}}/workflow/validate-pizza
+Content-Type: application/json
+
+{
+    "orderId": "1",
+    "approved": false
+}
+
+### Get order status (from pizza-order service)
+GET {{pizzaOrderUrl}}/order/123
+
+### Direct Pizza Store Endpoint (for testing)
+POST {{pizzaStorefrontUrl}}/order
+Content-Type: application/json
+
+{
+    "orderId": "123",
+    "pizzaType": "pepperoni",
+    "size": "large",
+    "customer": {
+        "name": "John Doe",
+        "address": "123 Main St",
+        "phone": "555-0123"
+    }
+}
+
+### Direct Pizza Kitchen Endpoint (for testing)
+POST {{pizzaKitchenUrl}}/cooking
+Content-Type: application/json
+
+{
+    "orderId": "123",
+    "pizzaType": "pepperoni",
+    "size": "large",
+    "status": "ordered"
+}
+
+### Direct Pizza Delivery Endpoint (for testing)
+POST {{pizzaDeliveryUrl}}/delivery
+Content-Type: application/json
+
+{
+    "orderId": "123",
+    "pizzaType": "pepperoni",
+    "size": "large",
+    "status": "cooked"
+}

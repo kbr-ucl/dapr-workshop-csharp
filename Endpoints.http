@@ -2,7 +2,6 @@
 @baseUrl = http://localhost:8004
 
 @pizzaOrderUrl = http://localhost:8001
-
 @pizzaStorefrontUrl = http://localhost:8002
 @pizzaKitchenUrl = http://localhost:8003
 @pizzaDeliveryUrl = http://localhost:8004
@@ -88,7 +87,7 @@ Content-Type: application/json
 }
 
 ### Direct Pizza Store Endpoint (for testing)
-POST {{pizzaStorefrontUrl}}/order
+POST {{pizzaStorefrontUrl}}/storefront/order
 Content-Type: application/json
 
 {

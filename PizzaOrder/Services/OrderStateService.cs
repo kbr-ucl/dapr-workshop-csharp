@@ -14,10 +14,10 @@ public class OrderStateService : IOrderStateService
 {
     private readonly ILogger<OrderStateService> _logger;
 
-    public OrderStateService()
-    {
-
-    }
+    public OrderStateService(ILogger<OrderStateService> logger)
+{
+    _logger = logger;
+}
 
     public async Task<Order> UpdateOrderStateAsync(Order order)
     {

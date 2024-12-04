@@ -17,7 +17,7 @@ public class StorefrontController : ControllerBase
         _logger = logger;
     }
 
-    [HttpPost]
+    [HttpPost("order")]
     public async Task<ActionResult<Order>> CreateOrder(Order order)
     {
         _logger.LogInformation("Received new order: {OrderId}", order.OrderId);

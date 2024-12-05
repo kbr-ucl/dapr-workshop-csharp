@@ -1,10 +1,10 @@
-// Program.cs
+using Dapr.Workflow;
 using PizzaWorkflow.Activities;
 using PizzaWorkflow.Workflows;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().Dapr();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

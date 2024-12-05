@@ -26,8 +26,8 @@ public class WorkflowController : ControllerBase
         try
         {
             _logger.LogInformation("Starting workflow for order {OrderId}", order.OrderId);
-
-            // TODO: Start the PizzaOrderingWorkflow workflow
+            
+            //TODO: Start the PizzaOrderingWorkflow workflow
 
             _logger.LogInformation("Workflow started successfully for order {OrderId}", order.OrderId);
 
@@ -55,7 +55,7 @@ public class WorkflowController : ControllerBase
             _logger.LogInformation("Raising validation event for order {OrderId}. Approved: {Approved}", 
                 validation.OrderId, validation.Approved);
 
-            // TODO: Raise the ValidationComplete event
+            //TODO: Raise the ValidationComplete event
 
             _logger.LogInformation("Validation event raised successfully for order {OrderId}", 
                 validation.OrderId);
@@ -69,6 +69,110 @@ public class WorkflowController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to raise validation event for order {OrderId}", validation.OrderId);
+            throw;
+        }
+    }
+
+    [HttpPost("get-status")]
+    public async Task<IActionResult> GetOrderStatus(ManageWorkflowRequest request)
+    {
+        var instanceId = $"pizza-order-{request.OrderId}";
+        
+        try
+        {
+            _logger.LogInformation("Getting workflow status for order {OrderId}", request.OrderId);
+
+            //TODO: Get workflow status
+
+            _logger.LogInformation("Workflow status retrieved successfully for order {OrderId}", request.OrderId);
+
+            return Ok(new
+            {
+                order_id = request.OrderId,
+                status
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to get workflow status for order {OrderId}", request.OrderId);
+            throw;
+        }
+    }
+
+    [HttpPost("pause-order")]
+    public async Task<IActionResult> PauseOrder(ManageWorkflowRequest request)
+    {
+        var instanceId = $"pizza-order-{request.OrderId}";
+        
+        try
+        {
+            _logger.LogInformation("Pausing workflow for order {OrderId}", request.OrderId);
+
+            //TODO: Pause workflow
+
+            _logger.LogInformation("Workflow paused successfully for order {OrderId}", request.OrderId);
+
+            return Ok(new
+            {
+                order_id = request.OrderId,
+                status = "paused"
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to pause workflow for order {OrderId}", request.OrderId);
+            throw;
+        }
+    }
+
+    [HttpPost("resume-order")]
+    public async Task<IActionResult> ResumeOrder(ManageWorkflowRequest request)
+    {
+        var instanceId = $"pizza-order-{request.OrderId}";
+        
+        try
+        {
+            _logger.LogInformation("Resuming workflow for order {OrderId}", request.OrderId);
+
+            //TODO: Resume workflow
+
+            _logger.LogInformation("Workflow resumed successfully for order {OrderId}", request.OrderId);
+
+            return Ok(new
+            {
+                order_id = request.OrderId,
+                status = "resumed"
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to resume workflow for order {OrderId}", request.OrderId);
+            throw;
+        }
+    }
+
+    [HttpPost("cancel-order")]
+    public async Task<IActionResult> CancelOrder( ManageWorkflowRequest request)
+    {
+        var instanceId = $"pizza-order-{request.OrderId}";
+        
+        try
+        {
+            _logger.LogInformation("Cancelling workflow for order {OrderId}", request.OrderId);
+
+            // TODO: Implement workflow termination call
+
+            _logger.LogInformation("Workflow cancelled successfully for order {OrderId}", request.OrderId);
+
+            return Ok(new
+            {
+                order_id = request.OrderId,
+                status = "terminated"
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to cancel workflow for order {OrderId}", request.OrderId);
             throw;
         }
     }

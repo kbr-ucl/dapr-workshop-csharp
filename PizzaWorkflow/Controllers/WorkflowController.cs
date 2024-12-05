@@ -27,11 +27,13 @@ public class WorkflowController : ControllerBase
         {
             _logger.LogInformation("Starting workflow for order {OrderId}", order.OrderId);
 
-            await _daprClient.StartWorkflowAsync(
-                workflowComponent: "dapr",
-                workflowName: nameof(PizzaOrderingWorkflow),
-                input: order,
-                instanceId: instanceId);
+            // TODO: Start the PizzaOrderingWorkflow workflow
+
+            // await _daprClient.StartWorkflowAsync(
+            //     workflowComponent: "dapr",
+            //     workflowName: nameof(PizzaOrderingWorkflow),
+            //     input: order,
+            //     instanceId: instanceId);
 
             _logger.LogInformation("Workflow started successfully for order {OrderId}", order.OrderId);
 
@@ -59,11 +61,13 @@ public class WorkflowController : ControllerBase
             _logger.LogInformation("Raising validation event for order {OrderId}. Approved: {Approved}", 
                 validation.OrderId, validation.Approved);
 
-            await _daprClient.RaiseWorkflowEventAsync(
-                instanceId: instanceId,
-                workflowComponent: "dapr",
-                eventName: "ValidationComplete",
-                eventData: validation);
+            // TODO: Raise the ValidationComplete event
+            
+            // await _daprClient.RaiseWorkflowEventAsync(
+            //     instanceId: instanceId,
+            //     workflowComponent: "dapr",
+            //     eventName: "ValidationComplete",
+            //     eventData: validation);
 
             _logger.LogInformation("Validation event raised successfully for order {OrderId}", 
                 validation.OrderId);

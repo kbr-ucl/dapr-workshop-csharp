@@ -2,7 +2,7 @@ using PizzaKitchen.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddDapr();
 builder.Services.AddSingleton<ICookService, CookService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

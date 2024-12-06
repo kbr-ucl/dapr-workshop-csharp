@@ -4,7 +4,7 @@ using PizzaWorkflow.Workflows;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers().Dapr();
+builder.Services.AddControllers().AddDapr();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

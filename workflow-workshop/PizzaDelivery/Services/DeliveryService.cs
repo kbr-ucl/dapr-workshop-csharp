@@ -34,28 +34,28 @@ public DeliveryService(DaprClient daprClient, ILogger<DeliveryService> logger)
         };
 
         try
-{
-    foreach (var (status, duration) in stages)
-    {
-        order.Status = status;
-        _logger.LogInformation("Order {OrderId} - {Status}", order.OrderId, status);
-        
-        await _daprClient.PublishEventAsync(PUBSUB_NAME, TOPIC_NAME, order);
-        await Task.Delay(TimeSpan.FromSeconds(duration));
-    }
+        {
+            foreach (var (status, duration) in stages)
+            {
+                order.Status = status;
+                _logger.LogInformation("Order {OrderId} - {Status}", order.OrderId, status);
+                
+                await _daprClient.PublishEventAsync(PUBSUB_NAME, TOPIC_NAME, order);
+                await Task.Delay(TimeSpan.FromSeconds(duration));
+            }
 
-    order.Status = "delivered";
-    await _daprClient.PublishEventAsync(PUBSUB_NAME, TOPIC_NAME, order);
-    return order;
-}
-catch (Exception ex)
-{
-    _logger.LogError(ex, "Error delivering order {OrderId}", order.OrderId);
-    order.Status = "delivery_failed";
-    order.Error = ex.Message;
-    await _daprClient.PublishEventAsync(PUBSUB_NAME, TOPIC_NAME, order);
-    return order;
-}
+            order.Status = "delivered";
+            await _daprClient.PublishEventAsync(PUBSUB_NAME, TOPIC_NAME, order);
+            return order;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error delivering order {OrderId}", order.OrderId);
+            order.Status = "delivery_failed";
+            order.Error = ex.Message;
+            await _daprClient.PublishEventAsync(PUBSUB_NAME, TOPIC_NAME, order);
+            return order;
+        }
     }
 }
 

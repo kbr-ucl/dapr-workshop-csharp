@@ -1,4 +1,5 @@
 using PizzaKitchen.Models;
+using Dapr.Client;
 
 namespace PizzaKitchen.Services;
 
@@ -9,10 +10,16 @@ public interface ICookService
 
 public class CookService : ICookService
 {
+    private readonly DaprClient _daprClient;
     private readonly ILogger<CookService> _logger;
 
-    public CookService(ILogger<CookService> logger)
+    private const string PUBSUB_NAME = "pizzapubsub";
+    private const string TOPIC_NAME = "orders";
+
+
+    public CookService(DaprClient daprClient, ILogger<CookService> logger)
     {
+        _daprClient = daprClient;
         _logger = logger;
     }
 
@@ -34,12 +41,12 @@ public class CookService : ICookService
                 order.Status = status;
                 _logger.LogInformation("Order {OrderId} - {Status}", order.OrderId, status);
 
+                await _daprClient.PublishEventAsync(PUBSUB_NAME, TOPIC_NAME, order);
                 await Task.Delay(TimeSpan.FromSeconds(duration));
             }
 
             order.Status = "cooked";
-            _logger.LogInformation("Order {OrderId} - {Status}", order.OrderId, order.Status);
-
+            await _daprClient.PublishEventAsync(PUBSUB_NAME, TOPIC_NAME, order);
             return order;
         }
         catch (Exception ex)
@@ -47,6 +54,7 @@ public class CookService : ICookService
             _logger.LogError(ex, "Error cooking order {OrderId}", order.OrderId);
             order.Status = "cooking_failed";
             order.Error = ex.Message;
+            await _daprClient.PublishEventAsync(PUBSUB_NAME, TOPIC_NAME, order);
             return order;
         }
     }

@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "pizzastorefront": "StartDebugging",
+        "pizzakitchen": "StartDebugging",
+        "pizzadelivery": "StartDebugging"
+      }
+    }
+  }
+}

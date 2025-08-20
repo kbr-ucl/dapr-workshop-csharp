@@ -1,0 +1,83 @@
+version: '3.9'
+
+services:
+  pizzastorefront:
+    image: ${DOCKER_REGISTRY-}pizzastorefront
+    build:
+      context: .
+      dockerfile: PizzaStorefront/Dockerfile
+    ports:
+      - "8002:8080"
+    networks:
+      - pizzanet
+
+  pizzastorefront-dapr:
+    image: "daprio/daprd:latest"
+    command: [
+      "./daprd",
+      "-app-id", "pizza-storefront",
+      "-app-port", "8080",
+      "--resources-path", "/components"
+    ]
+    network_mode: "service:pizzastorefront"
+    depends_on:
+      - pizzastorefront
+    volumes:
+      - ./start-here/resources:/components
+
+
+  pizzakitchen:
+    image: ${DOCKER_REGISTRY-}pizzakitchen
+    build:
+      context: .
+      dockerfile: PizzaKitchen/Dockerfile
+    ports:
+      - "8003:8080"
+    networks:
+      - pizzanet
+
+  pizzakitchen-dapr:
+    image: "daprio/daprd:latest"
+    command: [
+      "./daprd",
+      "-app-id", "pizza-kitchen",
+      "-app-port", "8080",
+      "--resources-path", "/components"
+    ]
+    network_mode: "service:pizzakitchen"
+    depends_on:
+      - pizzakitchen
+    volumes:
+      - ./start-here/resources:/components
+
+
+  pizzadelivery:
+    image: ${DOCKER_REGISTRY-}pizzadelivery
+    build:
+      context: .
+      dockerfile: PizzaDelivery/Dockerfile
+    ports:
+      - "8004:8080"
+    networks:
+      - pizzanet
+
+  pizzadelivery-dapr:
+    image: "daprio/daprd:latest"
+    command: [
+      "./daprd",
+      "-app-id", "pizza-delivery",
+      "-app-port", "8080",
+      "--resources-path", "/components"
+    ]
+    network_mode: "service:pizzadelivery"
+    depends_on:
+      - pizzadelivery
+    volumes:
+      - ./start-here/resources:/components
+
+
+networks:
+  pizzanet:
+    driver: bridge
+
+
